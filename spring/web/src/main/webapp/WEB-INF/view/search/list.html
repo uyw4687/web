@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{list}">list</title>
+</head>
+<body>
+	<table>
+		<tr th:each="item : ${ list }">
+			<td th:text="${item.email}">email</td>
+			<td th:text="${item.name}">name</td>
+			<td th:text="${#temporals.format(item.registerDateTime, 'yyyy-MM-dd HH:mm')}">dateTime</td>
+		</tr>
+	</table>
+</body>
+</html>
