@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<bean class="org.apache.tomcat.jdbc.pool.DataSource" id="dataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost/spring4fs?characterEncoding=utf8" />
+		<property name="username" value="spring4" />
+		<property name="password" value="spring4" />
+		<property name="initialSize" value="2" />
+		<property name="maxActive" value="10" />
+		<property name="testWhileIdle" value="true" />
+		<property name="minEvictableIdleTimeMillis" value="180000" />
+		<property name="timeBetweenEvictionRunsMillis" value="10000" />
+	</bean>
+	
+	<bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<bean class="spring.MemberDao" id="memberDao">
+		<constructor-arg ref="dataSource" />
+	</bean>
+	
+	<bean class="spring.MemberRegisterService" id="memRegSvc">
+		<constructor-arg ref="memberDao" />
+	</bean>
+	<bean class="spring.ChangePasswordService" id="chgPwdSvc">
+		<constructor-arg ref="memberDao" />
+	</bean>
+	
+	<bean class="spring.MemberPrinter" id="memPrinter" />
+	<bean class="spring.MemberListPrinter" id="memListPrinter">
+		<constructor-arg ref="memberDao" />
+		<constructor-arg ref="memPrinter" />
+	</bean>
+	<bean class="spring.MemberInfoPrinter" id="memInfoPrinter">
+		<property name="dao" ref="memberDao" />
+		<property name="printer" ref="memPrinter" />
+	</bean>
+	
+	<bean class="spring.VersionPrinter" id="verPrinter">
+		<constructor-arg value="1" />
+		<constructor-arg >
+			<value>4</value>
+		</constructor-arg>
+	<!-- 
+		<property name="majorVersion" value="1" />
+		<property name="minorVersion" value="3" />
+	 -->
+	</bean>
+	
+	<bean class="spring.CountPrinter" id="cntPrinter">
+		<constructor-arg ref="memberDao" />
+	</bean>
+</beans>

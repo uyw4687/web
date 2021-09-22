@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean class="spring.MemberPrinter" id="memPrinter" />
+	<bean class="spring.MemberListPrinter" id="memListPrinter">
+		<constructor-arg ref="memberDao" />
+		<constructor-arg ref="memPrinter" />
+	</bean>
+	<bean class="spring.MemberInfoPrinter" id="memInfoPrinter">
+		<property name="dao" ref="memberDao" />
+	</bean>
+	
+	<bean class="spring.VersionPrinter" id="verPrinter">
+		<constructor-arg value="2" />
+		<constructor-arg >
+			<value>4</value>
+		</constructor-arg>
+	</bean>
+	
+</beans>
